@@ -5,13 +5,13 @@
 /server/uploads/*
 
 # But don't ignore the folder itself
-!/server/uploads/
+!/server/uploads/.gitkeep
 
 # Ignore everything inside the temp folder
 /classification_dataset/temp/*
 
 # But don't ignore the folder itself
-!/classification_dataset/temp/
+!/classification_dataset/temp/.gitkeep
 
 # User-specific files
 *.rsuser
