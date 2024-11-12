@@ -52,16 +52,38 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
     exif = img._exif
     if exif == None:
         exif = img._getexif()
+
     if exif:
         for orientation in ExifTags.TAGS.keys():
             if ExifTags.TAGS[orientation] == 'Orientation':
-                if exif.get(orientation) == 3:
-                    img = img.rotate(180, expand=True)
-                elif exif.get(orientation) == 6:
-                    img = img.rotate(270, expand=True)
-                elif exif.get(orientation) == 8:
-                    img = img.rotate(90, expand=True)
+                orientation_value = exif.get(orientation)
 
+                if orientation_value == 1:
+                    # Normal (no rotation or flip)
+                    pass
+                elif orientation_value == 2:
+                    # Flipped horizontally
+                    img = img.transpose(Image.FLIP_LEFT_RIGHT)
+                elif orientation_value == 3:
+                    # Upside down (180 degrees rotation)
+                    img = img.rotate(180, expand=True)
+                elif orientation_value == 4:
+                    # Flipped vertically
+                    img = img.transpose(Image.FLIP_TOP_BOTTOM)
+                elif orientation_value == 5:
+                    # 90 degrees counterclockwise and flipped horizontally
+                    img = img.rotate(270, expand=True)
+                    img = img.transpose(Image.FLIP_LEFT_RIGHT)
+                elif orientation_value == 6:
+                    # 90 degrees clockwise (90 degrees rotation)
+                    img = img.rotate(270, expand=True)
+                elif orientation_value == 7:
+                    # 90 degrees clockwise and flipped horizontally
+                    img = img.rotate(90, expand=True)
+                    img = img.transpose(Image.FLIP_LEFT_RIGHT)
+                elif orientation_value == 8:
+                    # 90 degrees counterclockwise (270 degrees rotation)
+                    img = img.rotate(90, expand=True)
 
     # Convert the adjusted image to a numpy array for face_recognition
     uploaded_image = np.array(img)
