@@ -47,17 +47,21 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
     register_heif_opener()
 
     img = Image.open(image_path)
+
     # Check for orientation EXIF data and adjust if necessary
-    for orientation in ExifTags.TAGS.keys():
-        if ExifTags.TAGS[orientation] == 'Orientation':  
-            exif = img._exif
-            if exif and orientation in exif:
-                if exif[orientation] == 3:
+    exif = img._exif
+    if exif == None:
+        exif = img._getexif()
+    if exif:
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == 'Orientation':
+                if exif.get(orientation) == 3:
                     img = img.rotate(180, expand=True)
-                elif exif[orientation] == 6:
+                elif exif.get(orientation) == 6:
                     img = img.rotate(270, expand=True)
-                elif exif[orientation] == 8:
+                elif exif.get(orientation) == 8:
                     img = img.rotate(90, expand=True)
+
 
     # Convert the adjusted image to a numpy array for face_recognition
     uploaded_image = np.array(img)
@@ -67,7 +71,7 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
 
     if len(uploaded_encodings) != 1:
 
-        return "", [], "No or multiple faces detected in uploaded image."
+        return "", [], f"{len(uploaded_encodings)} faces detected in uploaded image. Please only include one person on your selfie."
 
     uploaded_encoding = uploaded_encodings[0]
 
