@@ -20,6 +20,8 @@ import os
 import face_recognition
 import hashlib
 import base64
+import numpy as np
+from PIL import Image, ExifTags
 
 app = Flask(__name__)
 
@@ -40,13 +42,30 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
     Returns:
     - tuple: Person ID, list of URLs and if an error occurred if a match is found, otherwise a message and empty list and the error flag.
     """
-    uploaded_image = face_recognition.load_image_file(image_path)
+
+    uploaded_image = ""
+    # Open the image and check for orientation metadata
+    with Image.open(image_path) as img:
+        # Check for orientation EXIF data and adjust if necessary
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == 'Orientation':
+                break
+        exif = img._getexif()
+        if exif and orientation in exif:
+            if exif[orientation] == 3:
+                img = img.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                img = img.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                img = img.rotate(90, expand=True)
+
+    # Convert the adjusted image to a numpy array for face_recognition
+    uploaded_image = np.array(img)
+
+    # Process the image with face_recognition
     uploaded_encodings = face_recognition.face_encodings(uploaded_image)
 
-    # Check for a single face encoding
     if len(uploaded_encodings) != 1:
-
-        print(len(uploaded_encodings))
 
         return "", [], "No or multiple faces detected in uploaded image."
 
