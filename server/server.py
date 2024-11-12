@@ -22,6 +22,7 @@ import hashlib
 import base64
 import numpy as np
 from PIL import Image, ExifTags
+from pillow_heif import register_heif_opener
 
 app = Flask(__name__)
 
@@ -43,21 +44,20 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
     - tuple: Person ID, list of URLs and if an error occurred if a match is found, otherwise a message and empty list and the error flag.
     """
 
-    uploaded_image = ""
-    # Open the image and check for orientation metadata
-    with Image.open(image_path) as img:
-        # Check for orientation EXIF data and adjust if necessary
-        for orientation in ExifTags.TAGS.keys():
-            if ExifTags.TAGS[orientation] == 'Orientation':
-                break
-        exif = img._getexif()
-        if exif and orientation in exif:
-            if exif[orientation] == 3:
-                img = img.rotate(180, expand=True)
-            elif exif[orientation] == 6:
-                img = img.rotate(270, expand=True)
-            elif exif[orientation] == 8:
-                img = img.rotate(90, expand=True)
+    register_heif_opener()
+
+    img = Image.open(image_path)
+    # Check for orientation EXIF data and adjust if necessary
+    for orientation in ExifTags.TAGS.keys():
+        if ExifTags.TAGS[orientation] == 'Orientation':  
+            exif = img._exif
+            if exif and orientation in exif:
+                if exif[orientation] == 3:
+                    img = img.rotate(180, expand=True)
+                elif exif[orientation] == 6:
+                    img = img.rotate(270, expand=True)
+                elif exif[orientation] == 8:
+                    img = img.rotate(90, expand=True)
 
     # Convert the adjusted image to a numpy array for face_recognition
     uploaded_image = np.array(img)
