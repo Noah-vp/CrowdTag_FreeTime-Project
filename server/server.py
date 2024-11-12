@@ -1,8 +1,8 @@
 """
 Flask Web Application for Face Recognition and Event Photo Matching
 
-This application uses Flask to handle uploads of face images, matches them against a 
-pre-existing dataset of face encodings for specific events, and returns identified 
+This application uses Flask to handle uploads of face images, matches them against a
+pre-existing dataset of face encodings for specific events, and returns identified
 or non-identified images associated with the user-uploaded image.
 
 Modules:
@@ -38,16 +38,18 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
     - tolerance (float): Face comparison tolerance level (default is 0.6).
 
     Returns:
-    - tuple: Person ID and list of URLs if a match is found, otherwise a message and empty list.
+    - tuple: Person ID, list of URLs and if an error occurred if a match is found, otherwise a message and empty list and the error flag.
     """
     uploaded_image = face_recognition.load_image_file(image_path)
     uploaded_encodings = face_recognition.face_encodings(uploaded_image)
 
     # Check for a single face encoding
     if len(uploaded_encodings) != 1:
-        print("No or multiple faces detected in uploaded image.")
-		return render_template("error.html", message="No or multiple faces detected in the uploaded image")
-    
+
+        print(len(uploaded_encodings))
+
+        return "", [], "No or multiple faces detected in uploaded image."
+
     uploaded_encoding = uploaded_encodings[0]
 
     # Open the file containing encodings for comparison
@@ -60,9 +62,9 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
             if face_recognition.compare_faces([db_encoding], uploaded_encoding, tolerance=tolerance)[0]:
                 urls = [f"datasets/{outputs_folder}/pictures/picture_{picture_id.strip()}.jpg" for picture_id in pictures.split(",")]
                 print(f"Match found: {person_id}, URLs: {urls}")
-                return person_id, urls
+                return person_id, urls, ""
     print("No match found.")
-    return "No match found", []
+    return "No match found", [], ""
 
 def calculate_folder_name(event_name, event_code):
     """
@@ -121,8 +123,10 @@ def results():
 
             # Calculate folder name and perform face matching
             folder_name = calculate_folder_name(event_name=event_type, event_code=event_code)
-            match, urls = find_match(file_path, folder_name)
+            match, urls, error = find_match(file_path, folder_name)
 
+            if error != "":
+                return render_template("error.html", message=error)
             return render_template("results.html", personid=match, picture_urls=urls, picture_amount=len(urls), event=event_type, name=name, event_code=event_code)
     except Exception as e:
         error_message = str(e)

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name = "viewport" content = "width=device-width, minimum-scale=1.0, maximum-scale = 1.0, user-scalable = no">
     <title>Find Your Selfie</title>
     <style>
         * {
@@ -57,14 +57,23 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+        input[type="password"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
 
         select {
+            -webkit-appearance: none;
+            appearance: none;
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 4px;
             background-color: #fff; 
             color: #333;
+            width: 100%;
         }
 
         .file-upload {
@@ -156,14 +165,14 @@
         </header>
         <form action="/results" method="POST" enctype="multipart/form-data" onsubmit="handleFormSubmit(event)">
             <label for="name">Enter your details:</label>
-            <input type="text" class="details" name="name" placeholder="Name..." required>
+            <input type="text" autocomplete="off" class="details" name="name" placeholder="Name..." required>
             <select class="details" name="event" required>
                 <option value="" disabled selected>Select an event...</option>
                 <option value="US Feest">US Feest</option>
                 <option value="Cabin Party">Cabin Party</option>
                 <option value="2024 oud en nieuw">2024 oud en nieuw</option>
             </select>
-            <input type="text" class="details" name="event_code" placeholder="Event code..." required>
+            <input type="password" autocomplete="off" class="details" name="event_code" placeholder="Event code..." required>
             <div class="file-upload">
                 <label for="file" class="custom-file-upload">
                     Upload a clear selfie of yourself
