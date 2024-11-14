@@ -31,26 +31,23 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Absolute path to the sc
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')      # Upload folder path
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)              # Ensure the upload folder exists
 
-def find_match(image_path, outputs_folder, tolerance=0.6):
+def load_img(image_path):
     """
-    Find a matching face in the dataset based on the uploaded image.
+    Load an image file, handle HEIC formats, and adjust orientation if necessary.
 
     Parameters:
-    - image_path (str): Path to the uploaded image.
-    - outputs_folder (str): Name of the folder containing the dataset of encodings.
-    - tolerance (float): Face comparison tolerance level (default is 0.6).
+    - image_path (str): Path to the image file to be processed.
 
     Returns:
-    - tuple: Person ID, list of URLs and if an error occurred if a match is found, otherwise a message and empty list and the error flag.
+    - numpy.ndarray: The loaded image as a numpy array, adjusted for orientation if required.
     """
-
     register_heif_opener()
 
     img = Image.open(image_path)
 
     # Check for orientation EXIF data and adjust if necessary
     exif = img._exif
-    if exif == None:
+    if exif is None:
         exif = img._getexif()
 
     if exif:
@@ -87,7 +84,22 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
 
     # Convert the adjusted image to a numpy array for face_recognition
     uploaded_image = np.array(img)
+    return uploaded_image
 
+def find_match(image_path, outputs_folder, tolerance=0.6):
+    """
+    Find a matching face in the dataset based on the uploaded image.
+
+    Parameters:
+    - image_path (str): Path to the uploaded image.
+    - outputs_folder (str): Name of the folder containing the dataset of encodings.
+    - tolerance (float): Face comparison tolerance level (default is 0.6).
+
+    Returns:
+    - tuple: Person ID, list of URLs and if an error occurred if a match is found, otherwise a message and empty list and the error flag.
+    """
+
+    uploaded_image = load_img(image_path)
     # Process the image with face_recognition
     uploaded_encodings = face_recognition.face_encodings(uploaded_image)
 
@@ -97,6 +109,8 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
 
     uploaded_encoding = uploaded_encodings[0]
 
+    urls = []
+    person_ids = []
     # Open the file containing encodings for comparison
     with open(os.path.join(BASE_DIR, f"static/datasets/{outputs_folder}/encodings.txt"), "r") as file:
         for line in file:
@@ -105,11 +119,13 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
 
             # Compare the uploaded encoding with the stored encoding
             if face_recognition.compare_faces([db_encoding], uploaded_encoding, tolerance=tolerance)[0]:
-                urls = [f"datasets/{outputs_folder}/pictures/picture_{picture_id.strip()}.jpg" for picture_id in pictures.split(",")]
+                person_ids.append(person_id)
+                for picture_id in pictures.split(","):
+                    picture_url = f"datasets/{outputs_folder}/pictures/picture_{picture_id.strip()}.jpg" 
+                    if not picture_url in urls:
+                        urls.append(picture_url)
                 print(f"Match found: {person_id}, URLs: {urls}")
-                return person_id, urls, ""
-    print("No match found.")
-    return "No match found", [], ""
+    return person_ids, urls, ""
 
 def calculate_folder_name(event_name, event_code):
     """
