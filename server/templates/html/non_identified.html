@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name = "viewport" content = "width=device-width, minimum-scale=1.0, maximum-scale = 1.0, user-scalable = no">
-    <title>Error</title>
+    <title>Pictures {{ event }}</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,30 +13,42 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #2c2c2c;
-            color: #fff;
+            background-color: #fff; 
         }
 
         .container {
             max-width: 600px;
             margin: 50px auto;
             padding: 20px;
-            background-color: #444;
+            background-color: #DCE3F6; 
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            text-align: center;
         }
 
         h1 {
             font-size: 24px;
-            color: #FF5A5A;
+            color: black; 
             margin-bottom: 15px;
         }
 
         p {
             font-size: 16px;
-            color: #ccc;
+            color: black; 
             margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 20px;
+            color: black; 
+            margin-bottom: 10px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 4px; 
+            border: 2px solid #4A90E2; 
         }
 
         .link {
@@ -46,27 +58,33 @@
             border: 2px solid #4A90E2;
             border-radius: 4px;
             display: inline-block;
-            margin-top: 20px;
+            margin: 5px 0;
             transition: background-color 0.3s, color 0.3s;
         }
 
         .link:hover {
-            background-color: #4A90E2;
-            color: #fff;
+            background-color: #4A90E2; 
+            color: #fff; 
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Error</h1>
-            <p>{{ message }}</p>
-            <p>Please try again with a new selfie.</p>
+            <h1>Hi!</h1>
+            <p>These are the pictures of event named {{ event }} that were not identified.</p>
+            <p>Have a look if you appear on any of them...</p>
         </header>
-
-        <p>
-            <a class="link" href="{{ url_for('main') }}">Go back to the main page</a>
-        </p>
+        
+        <h3>Not identified Pictures:</h3>
+        <div>
+            {% for url in picture_urls %}
+                <img src="{{ url_for('static', filename=url) }}" alt="Detected picture">
+            {% endfor %}
+            <p>
+                <a class="link" href="{{ url_for('upload') }}">Try finding your own pictures</a>
+            </p>
+        </div>
     </div>
 </body>
 </html>

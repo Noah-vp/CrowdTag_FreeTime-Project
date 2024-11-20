@@ -23,6 +23,7 @@ import base64
 import numpy as np
 from PIL import Image, ExifTags
 from pillow_heif import register_heif_opener
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 
@@ -156,11 +157,16 @@ def non_identified_urls(folder_name):
     with open(os.path.join(BASE_DIR, f"static/datasets/{folder_name}/non_identified.txt"), "r") as file:
         ids = file.readlines()[0].split(",")
     return [f"datasets/{folder_name}/pictures/picture_{picture_id.strip()}.jpg" for picture_id in ids if picture_id]
-
 @app.route('/')
 def main():
+    """Render the main  page."""
+    return render_template("html/main.html") 
+
+
+@app.route('/upload')
+def upload():
     """Render the main upload page."""
-    return render_template("main.html")
+    return render_template("html/upload.html")
 
 @app.route('/results', methods=['POST'])
 def results():
@@ -187,11 +193,11 @@ def results():
             match, urls, error = find_match(file_path, folder_name)
 
             if error != "":
-                return render_template("error.html", message=error)
-            return render_template("results.html", personid=match, picture_urls=urls, picture_amount=len(urls), event=event_type, name=name, event_code=event_code)
+                return render_template("html/error.html", message=error)
+            return render_template("html/results.html", personid=match, picture_urls=urls, picture_amount=len(urls), event=event_type, name=name, event_code=event_code)
     except Exception as e:
         error_message = str(e)
-        return render_template("error.html", message=error_message)
+        return render_template("html/error.html", message=error_message)
 
 @app.route('/non_identified', methods=['GET', 'POST'])
 def non_identified():
@@ -209,10 +215,10 @@ def non_identified():
         folder_name = calculate_folder_name(event_name=event_type, event_code=event_code)
         urls = non_identified_urls(folder_name)
 
-        return render_template("non_identified.html", picture_amount=len(urls), picture_urls=urls, event_type=event_type)
+        return render_template("html/non_identified.html", picture_amount=len(urls), picture_urls=urls, event_type=event_type)
     except Exception as e:
         error_message = str(e)
-        return render_template("error.html", message=error_message)
+        return render_template("html/error.html", message=error_message)
 
 if __name__ == '__main__':
     app.run(debug=True)

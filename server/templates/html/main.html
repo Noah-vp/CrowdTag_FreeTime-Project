@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrowdTag</title>
+    <link rel="stylesheet" href="../../static/template_extentions/style/main.css">
+</head>
+<body>
+    <!-- contact-us popup -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup">
+            <button class="close-popup" id="closePopup">✖</button>
+            <h2 data-i18n="contact_us_popup_title" id="popupTitle"></h2>
+            <p data-i18n="contact_us_popup_description"></p>
+            <form id="contactForm">
+                <label for="contactName" data-i18n="contact_us_label_name"></label>
+                <input type="text" id="contactName" name="contactName" required 
+                       placeholder="" data-i18n-placeholder="contact_us_placeholder_name">
+    
+                <label for="contactEmail" data-i18n="contact_us_label_email"></label>
+                <input type="email" id="contactEmail" name="contactEmail" required 
+                       placeholder="" data-i18n-placeholder="contact_us_placeholder_email">
+    
+                <label for="contactMessage" data-i18n="contact_us_label_message"></label>
+                <textarea id="contactMessage" name="contactMessage" rows="4" required 
+                          placeholder="" data-i18n-placeholder="contact_us_placeholder_message"></textarea>
+    
+                <button type="submit" class="btn" data-i18n="contact_us_submit_button"></button>
+            </form>
+        </div>
+    </div>
+    
+
+    <!-- language-switch button -->
+    <button class="language-switch" id="languageSwitch">
+        <img id="languageSwitch-img" src="https://upload.wikimedia.org/wikipedia/commons/2/20/Flag_of_the_Netherlands.svg" alt="Flag"/>
+    </button>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="left">
+            <a href="{{ url_for('main') }}">
+                <img class="logo" src="../../static/resources/images/CrowdTag.png" alt="CrowdTag Logo">
+            </a>
+        </div>
+        <button class="menu-toggle" aria-label="Toggle Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav class="nav-menu">
+            <a onclick="scrollToElement('about')" data-i18n="about_us"></a>
+            <a onclick="scrollToElement('features')" data-i18n="features"></a>
+            <a onclick="scrollToElement('testimonials')" data-i18n="testimonials"></a>
+            <button class="btn contact-btn" data-i18n="host_event"></button>
+            <a href="{{ url_for('upload') }}">
+                <button class="btn" data-i18n="find_pictures"></button>
+              </a>              
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1 data-i18n="hero_title"></h1>
+            <p data-i18n="hero_description"></p>
+            <div class="cta-buttons">
+                <button class="btn contact-btn" data-i18n="host_event"></button>
+                <a href="{{ url_for('upload') }}">
+                    <button class="btn" data-i18n="find_pictures"></button>
+                  </a>    
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="../../static/resources/images/banner.png" alt="Event Management">
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="section">
+        <h2 data-i18n="about_us"></h2>
+        <div class="about-container">
+            <div class="about-item">
+                <h3 data-i18n="about_crowdtag_title"></h3>
+                <p data-i18n="about_crowdtag_text" id="about_crowdtag_text"></p>
+                <br>
+                <a class="learn-more-btn" id="about_crowdtag_link" data-i18n="learn_more"></a>
+            </div>
+            <div class="about-item">
+                <h3 data-i18n="about_developers_title"></h3>
+                <p data-i18n="about_developers_text" id="about_developers_text"></p>
+                <br>
+                <a class="learn-more-btn" id="about_developers_link" data-i18n="learn_more"></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+        <h2 data-i18n="powerful_features"></h2>
+        <div class="feature">
+            <h4 data-i18n="feature_safe_secure"></h4>
+            <p data-i18n="feature_safe_secure_text"></p>
+        </div>
+        <div class="feature">
+            <h4 data-i18n="feature_personalized_access"></h4>
+            <p data-i18n="feature_personalized_access_text"></p>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="section testimonials">
+        <h3 data-i18n="testimonials_title"></h3>
+        <blockquote data-i18n="testimonial_1"></blockquote>
+    </section>
+
+    <!-- Mailing List Section -->
+    <section class="mailing-list">
+        <h4 data-i18n="mailing_list_title"></h4>
+        <br>
+        <br>
+        <form>
+            <input type="email" placeholder="" data-i18n-placeholder="enter_email" required>
+            <button type="submit" class="btn" data-i18n="sign_up"></button>
+        </form>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <div>CrowdTag © 2024</div>
+        <div class="footer-links">
+            <a href="#" data-i18n="company"></a>
+            <a href="#" class="contact-btn" data-i18n="support"></a>
+            <a href="#" id="last" data-i18n="legal"></a>
+        </div>
+    </footer>
+
+    <script src="../../static/template_extentions/script/main.js" type="module"></script>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+        // Initialize EmailJS
+        (function () {
+        emailjs.init("AbpoErjyFC5049-tp"); // Replace with your EmailJS User ID
+        })();
+
+        // Form submission handling
+        document.getElementById("contactForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent form from reloading the page
+
+            // Get form data
+            var formData = {
+            contactName: document.getElementById("contactName").value,
+            contactEmail: document.getElementById("contactEmail").value,
+            contactMessage: document.getElementById("contactMessage").value,
+            };
+
+            // Send the email using EmailJS
+            emailjs.send("service_i1m22vx", "template_j84x19l", formData).then(
+            function (response) {
+                console.log("Email sent successfully:", response);
+                alert("Your message has been sent!");
+                // Optionally reset the form
+                document.getElementById("contactForm").reset();
+                window.location.href = "{{ url_for('main') }}";
+            },
+            function (error) {
+                console.error("Error sending email:", error);
+                alert("Failed to send your message. Please try again later.");
+            }
+        );
+        });
+
+     </script>
+    <script>
+        function scrollToElement(elementId) {
+          const element = document.getElementById(elementId);
+    
+          // Calculate position
+          const offset = 100; // Adjust this value as needed (in pixels)
+          const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+    
+          // Scroll to the position with an offset
+          window.scrollTo({
+            top: elementPosition - offset,
+            behavior: 'smooth' // Smooth scrolling
+          });
+        }
+
+      </script>
+</body>
+</html>
