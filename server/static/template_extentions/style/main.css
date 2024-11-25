@@ -1,29 +1,17 @@
-/* Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body, html {
-    font-family: Arial, sans-serif;
-    color: #333;
-}
 /* Popup overlay to center the form */
 .popup-overlay {
-    display: none; /* Initially hidden */
+    display: none; 
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Dim background */
-    z-index: 2000; /* Above all other content */
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 2000; 
     justify-content: center;
     align-items: center;
 }
 
-/* Popup container */
 .popup {
     background: #fff;
     padding: 30px;
@@ -35,7 +23,6 @@ body, html {
     text-align: center;
 }
 
-/* Close button */
 .close-popup {
     position: absolute;
     top: 10px;
@@ -44,40 +31,36 @@ body, html {
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #333; /* Darker color for the close button */
+    color: #333; 
 }
 
-/* Title and description */
 .popup h2 {
     font-size: 1.8rem;
     font-weight: bold;
-    color: #333; /* Matches text color in the theme */
+    color: #333; 
     margin-bottom: 15px;
 }
 
 .popup p {
     font-size: 1rem;
-    color: #555; /* Lighter grey text */
+    color: #555; 
     margin-bottom: 20px;
 }
 
-/* Form styles */
 .popup form {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* Form label styles */
 .popup label {
     font-size: 1rem;
     font-weight: bold;
-    color: #333; /* Consistent with theme text color */
+    color: #333;
     margin-bottom: 5px;
     text-align: left;
 }
 
-/* Input and textarea styling */
 .popup input[type="text"],
 .popup input[type="email"],
 textarea {
@@ -86,28 +69,26 @@ textarea {
     border: 1px solid #ccc;
     border-radius: 4px;
     width: 100%;
-    box-sizing: border-box; /* Ensures padding is included in width calculation */
-    background-color: #f8f9fa; /* Light background color to match the theme */
+    box-sizing: border-box;
+    background-color: #f8f9fa;
     transition: border-color 0.3s ease-in-out;
 }
 
 .popup input[type="text"]:focus,
 .popup input[type="email"]:focus,
 textarea:focus {
-    border-color: #4a6bcd; /* Highlight the field on focus */
+    border-color: #4a6bcd; 
     outline: none;
 }
 
-/* Textarea styling */
 .popup textarea {
     resize: vertical;
     min-height: 120px;
 }
 
-/* Submit button styling */
 .popup button[type="submit"] {
     padding: 12px 20px;
-    background-color: #4a6bcd; /* Matches your theme’s accent color */
+    background-color: #4a6bcd; 
     color: #fff;
     font-size: 1.1rem;
     font-weight: bold;
@@ -118,101 +99,47 @@ textarea:focus {
 }
 
 .popup button[type="submit"]:hover {
-    background-color: #3a58b2; /* Darker shade on hover */
+    background-color: #3a58b2; 
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .popup {
-        padding: 20px;
-    }
-
-    .popup h2 {
-        font-size: 1.5rem;
-    }
-
-    .popup label, .popup input[type="text"], input[type="email"], textarea {
-        font-size: 0.9rem;
-    }
-
-    .popup button[type="submit"] {
-        font-size: 1rem;
-    }
+#successPopup .popup {
+    border: 2px solid #4a6bcd;
 }
 
-
-
-/* language switch button */
-.language-switch {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: 50%;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    z-index: 1000; /* Ensures it stays above other content */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
+#successPopup h2 {
+    color: #4a6bcd; 
 }
 
-.language-switch img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
+#errorPopup .popup {
+    border: 2px solid #4a6bcd;
 }
 
-.language-switch:hover {
-    background-color: #f0f0f0;
+#errorPopup h2 {
+    color: #4a6bcd;
 }
 
-/* Header */
-.header {
+/* Menu bar */
+.header{
     position: sticky;
     top: 0;
-    z-index: 1000; /* Ensures it stays above other content */
+    z-index: 1000; 
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
     background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for visual separation */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
 
-
-.header .left {
-    display: flex;
-    align-items: center;
-}
-
-.header .left .logo {
-    height: 32px;
-    margin-right: 10px; /* Adds space between the logo and text */
-}
-
-.header .left .text {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-/* Style for the nav links */
 .header nav a {
-    margin: 0 10px; /* Reduce spacing between links */
-    font-size: 14px; /* Make the font size smaller */
+    margin: 0 10px; 
+    font-size: 14px; 
     color: #333;
     text-decoration: none;
     cursor: pointer;
 }
 
-/* Ensure menu-toggle is styled */
 .menu-toggle {
-    display: none; /* Hidden on larger screens */
+    display: none; 
     background: none;
     border: none;
     cursor: pointer;
@@ -230,48 +157,8 @@ textarea:focus {
     border-radius: 2px;
 }
 
-/* Show menu-toggle on small screens */
-@media (max-width: 768px) {
-    .menu-toggle {
-        display: flex;
-    }
-    .nav-menu {
-        text-align: center;
-        width: 100%;
-        display: none;
-        flex-direction: column;
-        gap: 10px;
-        position: absolute;
-        top: 100%;
-        right: 0;
-        background-color: #f8f9fa;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        padding: 10px 20px;
-        border-radius: 8px;
-    }
-
-    .nav-menu.active {
-        display: flex; /* Show when active */
-    }
-    .hero-image {
-        display : none !important;
-    }
-    .about-container{
-        flex-direction: column;
-        padding-left: 7.5%;
-        padding-right: 7.5%;
-    }
-    .about-item {
-        width: 100% !important;
-    }
-    .mailing-list form .btn{
-        margin-top: 5px;
-    }
-}
-
-
 .header nav a:hover {
-    color: #4a6bcd; /* Optional: change color on hover for better UX */
+    color: #4a6bcd; 
 }
 
 nav .btn {
@@ -289,7 +176,7 @@ nav .btn {
     justify-content: center;
     align-items: center;
     padding: 60px 20px;
-    background-color: #f8f9fa; /* Optional background color */
+    background-color: #f8f9fa; 
 }
 
 .hero-content {
@@ -297,11 +184,11 @@ nav .btn {
     max-width: 1200px;
     width: 100%;
     align-items: center;
-    gap: 20px; /* Space between text and image */
+    gap: 20px; 
 }
 
 .hero-text {
-    flex: 1; /* Allows text section to take up available space */
+    flex: 1; 
     padding: 5%;
     padding-left: 10%;
 }
@@ -319,7 +206,7 @@ nav .btn {
 .hero .btn {
     padding: 10px 20px;
     font-size: 1em;
-    background-color: #4a6bcd; /* Button color */
+    background-color: #4a6bcd;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -327,17 +214,17 @@ nav .btn {
 }
 
 .hero-image {
-    flex: 1; /* Allows image section to take up available space */
+    flex: 1; 
     display: flex;
-    justify-content: center; /* Centers the image within its container */
+    justify-content: center; 
     padding-right: 40px;
 }
 
 .hero-image img {
     max-width: 100%;
     height: auto;
-    max-height: 400px; /* Restrict image height */
-    object-fit: cover; /* Ensures image doesn't stretch */
+    max-height: 400px; 
+    object-fit: cover; 
 }
 
 /* Sections */
@@ -348,7 +235,7 @@ nav .btn {
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
-    flex: 1; /* Allows image section to take up available space */
+    flex: 1; 
 }
 #about h2 { 
     
@@ -361,13 +248,13 @@ nav .btn {
     padding-right: 15%;
     display: flex;
     align-items: center;
-    gap: 20px; /* Space between text and image */
+    gap: 20px; 
 }
 .profilePicture{
     width: 52px;
     height: 52px;
-    border-radius: 50%; /* Makes the logo round */
-    margin-right: 10px; /* Adds space between the logo and text */
+    border-radius: 50%; 
+    margin-right: 10px; 
 }
 .learn-more-btn{
     cursor: pointer;
@@ -438,19 +325,60 @@ blockquote {
         border-radius: 4px;
 }
 
-/* Footer */
-footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    background-color: #f8f9fa;
-}
 
-footer a {
-    text-decoration: none;
-    color: #555;
-    margin: 0 10px;
-}
-footer #last {
-    margin-right:50px;
+/* Mobile version */
+@media (max-width: 768px) {
+    .popup {
+        padding: 20px;
+    }
+
+    .popup h2 {
+        font-size: 1.5rem;
+    }
+
+    .popup label, .popup input[type="text"], input[type="email"], textarea {
+        font-size: 0.9rem;
+    }
+
+    .popup button[type="submit"] {
+        font-size: 1rem;
+    }
+    .menu-toggle {
+        display: flex;
+    }
+    .nav-menu {
+        text-align: center;
+        width: 100%;
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: #f8f9fa;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 10px 20px;
+        border-radius: 8px;
+    }
+
+    .nav-menu.active {
+        display: flex; 
+    }
+    .header nav a {
+        width: 100%;
+    }
+    .hero-image {
+        display : none !important;
+    }
+    .about-container{
+        flex-direction: column;
+        padding-left: 7.5%;
+        padding-right: 7.5%;
+    }
+    .about-item {
+        width: 100% !important;
+    }
+    .mailing-list form .btn{
+        margin-top: 5px;
+    }
 }

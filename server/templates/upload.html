@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/x-icon" href="../../static/resources/icons/favicon.ico">
+    <title data-i18n="upload_page_title"></title>
+    <link rel="stylesheet" href="../../static/template_extentions/style/general.css">
+    <link rel="stylesheet" href="../../static/template_extentions/style/upload.css">
+    <script src="../../static/template_extentions/script/upload.js" type="text/javascript"></script>
+    <script src="../../static/template_extentions/script/language.js" type="module"></script>
+</head>
+<body>
+    <!-- language-switch button -->
+    <button class="language-switch" id="languageSwitch">
+        <img id="languageSwitch-img" src="https://upload.wikimedia.org/wikipedia/commons/2/20/Flag_of_the_Netherlands.svg" alt="Flag"/>
+    </button>
+    <!-- home button -->
+    <header class="header">
+        <div class="left">
+            <a href="{{ url_for('main') }}">
+                <img class="logo" src="../../static/resources/images/CrowdTag.png" alt="CrowdTag Logo">
+            </a>
+        </div>
+    </header>
+    <!-- main content -->
+    <div class="container" id="input">
+        <header>
+            <h1 data-i18n="upload_page_header"></h1>
+            <p data-i18n="upload_page_description"></p>
+        </header>
+        <form action="/results" method="POST" enctype="multipart/form-data" onsubmit="handleFormSubmit(event)">
+            <label for="name" data-i18n="upload_form_label_details"></label>
+            <input type="text" autocomplete="off" class="details" name="name" data-i18n-placeholder="upload_form_placeholder_name" required>
+            <select class="details" name="event" required>
+                <option value="" disabled selected data-i18n="upload_form_placeholder_event"></option>
+                <option value="US Feest" data-i18n="upload_form_option_1"></option>
+                <option value="Cabin Party" data-i18n="upload_form_option_2"></option>
+            </select>
+            <input type="password" autocomplete="off" class="details" name="event_code" placeholder="" data-i18n-placeholder="upload_form_placeholder_event_code" required>
+            <div class="file-upload">
+                <label for="file" class="custom-file-upload" data-i18n="upload_form_label_selfie"></label>
+                <input type="file" id="file" name="file" accept="image/*" required onchange="updateFileName()">
+                <span class="file-name" id="file-name" data-i18n="upload_form_file_name"></span>
+            </div>
+            <br>
+            <button type="submit" data-i18n="upload_form_button_submit"></button>
+        </form>
+    </div>
+    <!-- loader -->
+    <div class="container" id="loader" style="flex-direction: column; justify-content: center; align-items: center;">
+        <h1 data-i18n="loader_processing_header"></h1>
+        <p data-i18n="loader_processing_description"></p>
+        <div class="loader"></div>
+    </div>    
+</body>
+</html>

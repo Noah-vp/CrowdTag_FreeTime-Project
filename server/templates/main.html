@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../../static/resources/icons/favicon.ico">
     <title>CrowdTag</title>
+    <link rel="stylesheet" href="../../static/template_extentions/style/general.css">
     <link rel="stylesheet" href="../../static/template_extentions/style/main.css">
+    <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script src="../../static/template_extentions/script/language.js" type="module"></script>
+    <script src="../../static/template_extentions/script/buttons.js" type="module"></script>
+    <script src="../../static/template_extentions/script/scroll.js" type="text/javascript"></script>
+    <script src="../../static/template_extentions/script/email.js" type="module"></script>
 </head>
 <body>
     <!-- contact-us popup -->
@@ -30,7 +39,24 @@
             </form>
         </div>
     </div>
-    
+    <!-- Success Message Popup -->
+    <div class="popup-overlay" id="successPopup">
+        <div class="popup">
+            <button class="close-popup" id="closeSuccessPopup">✖</button>
+            <h2 data-i18n="success_popup_title">Success</h2>
+            <p data-i18n="success_popup_message">Your operation was successful!</p>
+        </div>
+    </div>
+
+    <!-- Error Message Popup -->
+    <div class="popup-overlay" id="errorPopup">
+        <div class="popup">
+            <button class="close-popup" id="closeErrorPopup">✖</button>
+            <h2 data-i18n="error_popup_title">Error</h2>
+            <p data-i18n="error_popup_message">Something went wrong. Please try again.</p>
+        </div>
+    </div>
+        
 
     <!-- language-switch button -->
     <button class="language-switch" id="languageSwitch">
@@ -54,9 +80,7 @@
             <a onclick="scrollToElement('features')" data-i18n="features"></a>
             <a onclick="scrollToElement('testimonials')" data-i18n="testimonials"></a>
             <button class="btn contact-btn" data-i18n="host_event"></button>
-            <a href="{{ url_for('upload') }}">
-                <button class="btn" data-i18n="find_pictures"></button>
-              </a>              
+            <button class="btn" onclick="window.location.href = '/upload';" data-i18n="find_pictures"></button>             
         </nav>
     </header>
 
@@ -135,60 +159,5 @@
             <a href="#" id="last" data-i18n="legal"></a>
         </div>
     </footer>
-
-    <script src="../../static/template_extentions/script/main.js" type="module"></script>
-    <script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
-    </script>
-    <script type="text/javascript">
-        // Initialize EmailJS
-        (function () {
-        emailjs.init("AbpoErjyFC5049-tp"); // Replace with your EmailJS User ID
-        })();
-
-        // Form submission handling
-        document.getElementById("contactForm").addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent form from reloading the page
-
-            // Get form data
-            var formData = {
-            contactName: document.getElementById("contactName").value,
-            contactEmail: document.getElementById("contactEmail").value,
-            contactMessage: document.getElementById("contactMessage").value,
-            };
-
-            // Send the email using EmailJS
-            emailjs.send("service_i1m22vx", "template_j84x19l", formData).then(
-            function (response) {
-                console.log("Email sent successfully:", response);
-                alert("Your message has been sent!");
-                // Optionally reset the form
-                document.getElementById("contactForm").reset();
-                window.location.href = "{{ url_for('main') }}";
-            },
-            function (error) {
-                console.error("Error sending email:", error);
-                alert("Failed to send your message. Please try again later.");
-            }
-        );
-        });
-
-     </script>
-    <script>
-        function scrollToElement(elementId) {
-          const element = document.getElementById(elementId);
-    
-          // Calculate position
-          const offset = 100; // Adjust this value as needed (in pixels)
-          const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-    
-          // Scroll to the position with an offset
-          window.scrollTo({
-            top: elementPosition - offset,
-            behavior: 'smooth' // Smooth scrolling
-          });
-        }
-
-      </script>
 </body>
 </html>

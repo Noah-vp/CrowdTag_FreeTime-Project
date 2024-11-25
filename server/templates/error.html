@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/x-icon" href="../../static/resources/icons/favicon.ico">
+    <link rel="stylesheet" href="../../static/template_extentions/style/general.css">
+    <title data-i18n="error_page_title"></title>
+    <script src="../../static/template_extentions/script/upload.js" type="text/javascript"></script>
+    <script src="../../static/template_extentions/script/language.js" type="module"></script>
+</head>
+<body>
+    <!-- language-switch button -->
+    <button class="language-switch" id="languageSwitch">
+        <img id="languageSwitch-img" src="https://upload.wikimedia.org/wikipedia/commons/2/20/Flag_of_the_Netherlands.svg" alt="Flag"/>
+    </button>
+    <!-- home button -->
+    <header class="header">
+        <div class="left">
+            <a href="{{ url_for('main') }}">
+                <img class="logo" src="../../static/resources/images/CrowdTag.png" alt="CrowdTag Logo">
+            </a>
+        </div>
+    </header>
+    <!-- main content -->
+    <div class="container">
+        <header>
+            <h1 data-i18n="error_page_header"></h1>
+            <p data-i18n="error_message_{{error_type}}" data-i18n-params='{"faces_amount": "{{faces_amount}}"}'></p>
+            <p data-i18n="error_page_retry"></p>
+        </header>
+        <p>
+            <a class="link" href="{{ url_for('upload') }}" data-i18n="error_page_back_link"></a>
+        </p>
+    </div>
+</body>
+</html>
