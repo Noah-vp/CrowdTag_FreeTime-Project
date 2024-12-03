@@ -95,7 +95,7 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
     - tolerance (float): Face comparison tolerance level (default is 0.6).
 
     Returns:
-    - tuple: Person ID, list of URLs and an empty sting if a match is found, otherwise a message and empty list and the error flag.
+    - tuple: list of URLs and an empty sting if a match is found, otherwise a message and empty list and the error flag.
     """
 
     uploaded_image = load_img(image_path)
@@ -103,15 +103,11 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
     uploaded_encodings = face_recognition.face_encodings(uploaded_image)
 
     # If there are multiple or no people in the picture raise an error and tell the error page how many people where in the picture.
-    if len(uploaded_encodings) != 1:
-        if(len(len(uploaded_encodings))>1):
-            pass
-        return "", [], len(uploaded_encodings) 
+    if len(uploaded_encodings) < 1:
+        return "error", len(uploaded_encodings) 
 
-    uploaded_encoding = uploaded_encodings[0]
+    urls = {}
 
-    urls = []
-    person_ids = []
     # Open the file containing encodings for comparison
     with open(os.path.join(BASE_DIR, f"static/datasets/{outputs_folder}/encodings.txt"), "r") as file:
         for line in file:
@@ -119,14 +115,15 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
             db_encoding = list(map(float, encoding_str.split(",")))
 
             # Compare the uploaded encoding with the stored encoding
-            if face_recognition.compare_faces([db_encoding], uploaded_encoding, tolerance=tolerance)[0]:
-                person_ids.append(person_id)
-                for picture_id in pictures.split(","):
-                    picture_url = f"datasets/{outputs_folder}/pictures/picture_{picture_id.strip()}.jpg" 
-                    if not picture_url in urls:
-                        urls.append(picture_url)
-                #print(f"Match found: {person_id}, URLs: {urls}")
-    return person_ids, urls, ""
+            for uploaded_encoding in uploaded_encodings:
+                if face_recognition.compare_faces([db_encoding], uploaded_encoding, tolerance=tolerance)[0]:
+                    picture_urls = []
+                    for picture_id in pictures.split(","):
+                        picture_url = f"static/datasets/{outputs_folder}/pictures/picture_{picture_id.strip()}.jpg" 
+                        if not picture_url in picture_urls:
+                            picture_urls.append(picture_url)
+                    urls[str(len(urls.keys())+1)] = picture_urls
+    return urls, ""
 
 def calculate_folder_name(event_name, event_code):
     """
@@ -190,12 +187,15 @@ def results():
 
             # Calculate folder name and perform face matching
             folder_name = calculate_folder_name(event_name=event_type, event_code=event_code)
-            match, urls, error = find_match(file_path, folder_name)
+            urls, error = find_match(file_path, folder_name)
 
             # If there are too many people in the selfie match that to the corrosponding error type and show the error page
             if error != "":
                 return render_template("error.html", error_type = "incorrect_faces", faces_amount = error)
-            return render_template("results.html", personid=match, picture_urls=urls, picture_amount=len(urls), event=event_type, name=name, event_code=event_code)
+            all_urls = [url for person_urls in urls.values() for url in person_urls]
+            pic_urls = list(set(all_urls))
+            print(f"URLs: {urls}, Picture URLs: {pic_urls}, Picture Amount: {len(pic_urls)}, Event: {event_type}, Name: {name}, Event Code: {event_code}")
+            return render_template("results.html", data=urls, picture_urls=pic_urls, picture_amount=len(pic_urls), event=event_type, name=name, event_code=event_code)
     # if an error occured match that to the corrosponding error type and show the error page
     except FileNotFoundError:
         return render_template("error.html", error_type= "no_file")

@@ -1,0 +1,26 @@
+button {
+    padding: 10px;
+    background-color: none;
+    color: #4A90E2;
+    border: 2px solid #4A90E2;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-right: 10px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.non-selected {
+    color: #4A90E2;
+    background-color: none;
+    border: 2px solid #4A90E2;
+    opacity: 0.6;
+}
+
+button.selected {
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    box-shadow: 0 0 8px rgba(72, 144, 226, 0.6);
+}
