@@ -104,6 +104,8 @@ def find_match(image_path, outputs_folder, tolerance=0.6):
 
     # If there are multiple or no people in the picture raise an error and tell the error page how many people where in the picture.
     if len(uploaded_encodings) != 1:
+        if(len(len(uploaded_encodings))>1):
+            pass
         return "", [], len(uploaded_encodings) 
 
     uploaded_encoding = uploaded_encodings[0]
