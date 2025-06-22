@@ -17,6 +17,7 @@ Author: [Noah van Potten]
 
 from flask import Flask, request, render_template
 import os
+import face_recognition_models
 import face_recognition
 import hashlib
 import base64
